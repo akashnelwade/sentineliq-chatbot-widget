@@ -1,12 +1,12 @@
-package com.sentineliq.service;
+package com.sentineliq.service.impl;
 
 import com.sentineliq.entity.User;
-import com.sentineliq.exception.DuplicateResourceException;
 import com.sentineliq.exception.ResourceNotFoundException;
 import com.sentineliq.repository.UserRepository;
+import com.sentineliq.service.UserService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -19,29 +19,20 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User createUser(User user) {
-
-        //  Validation
+        // basic validation
         if (user.getEmail() == null || user.getEmail().isEmpty()) {
             throw new IllegalArgumentException("Email cannot be empty");
         }
-
-        //  Duplicate check
-        userRepository.findByEmail(user.getEmail())
-                .ifPresent(u -> {
-                    throw new DuplicateResourceException("Email already exists");
-                });
-
         return userRepository.save(user);
     }
 
     @Override
-    public List<User> getAllUsers() {
-        return userRepository.findAll();
+    public Page<User> getAllUsers(Pageable pageable) {
+        return userRepository.findAll(pageable);
     }
 
     @Override
     public User getUserById(Long id) {
-
         return userRepository.findById(id)
                 .orElseThrow(() ->
                         new ResourceNotFoundException("User not found with id: " + id)
@@ -50,8 +41,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void deleteUser(Long id) {
-
-        User user = getUserById(id);
+        User user = getUserById(id); // reuse method
         userRepository.delete(user);
     }
 }

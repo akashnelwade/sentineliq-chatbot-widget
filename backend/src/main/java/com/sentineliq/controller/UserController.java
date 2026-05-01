@@ -2,9 +2,12 @@ package com.sentineliq.controller;
 
 import com.sentineliq.entity.User;
 import com.sentineliq.service.UserService;
+import com.sentineliq.service.UserService;
+import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/users")
@@ -16,24 +19,31 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PostMapping
-    public User createUser(@RequestBody User user) {
-        return userService.createUser(user);
+    //  GET /all (Paginated)
+    @GetMapping("/all")
+    public ResponseEntity<Page<User>> getAllUsers(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size
+    ) {
+        return ResponseEntity.ok(userService.getAllUsers(PageRequest.of(page, size)));
     }
 
-    @GetMapping
-    public List<User> getAllUsers() {
-        return userService.getAllUsers();
-    }
-
+    //  GET /{id} (404 handled in service)
     @GetMapping("/{id}")
-    public User getUser(@PathVariable Long id) {
-        return userService.getUserById(id);
+    public ResponseEntity<User> getUser(@PathVariable Long id) {
+        return ResponseEntity.ok(userService.getUserById(id));
     }
 
+    //  POST /create with @Valid
+    @PostMapping("/create")
+    public ResponseEntity<User> createUser(@Valid @RequestBody User user) {
+        return ResponseEntity.status(201).body(userService.createUser(user));
+    }
+
+    // DELETE
     @DeleteMapping("/{id}")
-    public String deleteUser(@PathVariable Long id) {
+    public ResponseEntity<String> deleteUser(@PathVariable Long id) {
         userService.deleteUser(id);
-        return "Deleted successfully";
+        return ResponseEntity.ok("Deleted successfully");
     }
 }

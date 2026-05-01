@@ -1,20 +1,18 @@
-package com.sentineliq.entity;
+package com.sentineliq.dto;
 
-import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 
-@Entity
-@Table(name = "users")
-public class User {
+public class UserDTO {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
-    public String name;
+    @NotBlank(message = "name is required")
+    private String name;
 
-    @Column(unique = true, nullable = false)
-    public String email;
+    @Email(message = "Invalid email")
+    @NotBlank(message = "emial is required")
+    private String email;
 
     public Long getId() {
         return id;
