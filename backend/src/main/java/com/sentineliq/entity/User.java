@@ -1,7 +1,16 @@
 package com.sentineliq.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
+import java.time.LocalDateTime;
+import java.util.Date;
+
+@Setter
+@Getter
 @Entity
 @Table(name = "users")
 public class User {
@@ -11,32 +20,19 @@ public class User {
     private Long id;
 
     @Column(nullable = false)
-    public String name;
+    private String name;
 
     @Column(unique = true, nullable = false)
-    public String email;
+    private String email;
 
-    public Long getId() {
-        return id;
-    }
+    private String password;
+    private String role;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    @CreatedDate
+    private LocalDateTime createdAt;
 
-    public String getName() {
-        return name;
-    }
+    @LastModifiedDate
+    private LocalDateTime updatedAt;
 
-    public void setName(String name) {
-        this.name = name;
-    }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
 }

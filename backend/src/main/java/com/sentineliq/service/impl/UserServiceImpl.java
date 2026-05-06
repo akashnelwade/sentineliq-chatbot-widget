@@ -8,6 +8,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class UserServiceImpl implements UserService {
 
@@ -40,8 +42,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User updateUser(Long id, User user) {
+        return null;
+    }
+
+    @Override
     public void deleteUser(Long id) {
         User user = getUserById(id); // reuse method
         userRepository.delete(user);
+    }
+
+    @Override
+    public List<User> searchUsers(String q) {
+        return List.of();
     }
 }
