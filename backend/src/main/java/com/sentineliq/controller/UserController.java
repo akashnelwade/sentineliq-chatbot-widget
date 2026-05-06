@@ -1,7 +1,9 @@
 package com.sentineliq.controller;
 
 import com.sentineliq.entity.User;
+import com.sentineliq.service.EmailService;
 import com.sentineliq.service.UserService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,8 +20,10 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+    private EmailService emailService;
 
     // GET ALL (Pagination)
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/all")
     public Page<User> getAllUsers(Pageable pageable) {
         return userService.getAllUsers(pageable);
@@ -27,18 +31,21 @@ public class UserController {
 
     // GET BY ID (404 handled in service)
     @GetMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public User getUserById(@PathVariable Long id) {
         return userService.getUserById(id);
     }
 
     // CREATE
     @PostMapping("/create")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<User> createUser(@Valid @RequestBody User user) {
         User savedUser = userService.createUser(user);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedUser);
     }
 
     // UPDATE
+
     @PutMapping("/{id}")
     public User updateUser(@PathVariable Long id, @RequestBody User user) {
         return userService.updateUser(id, user);
@@ -51,9 +58,27 @@ public class UserController {
         return "User deleted successfully";
     }
 
+    @PreAuthorize("hasRole('USER')")
+    @GetMapping("/profile")
+    public String profile() {
+        return "Welcome User";
+    }
+
     //  SEARCH
     @GetMapping("/search")
     public List<User> searchUsers(@RequestParam String q) {
         return userService.searchUsers(q);
+    }
+
+    @GetMapping("/send-mail")
+    public String sendMail() {
+
+        emailService.sendEmail(
+                "test@gmail.com",
+                "Reminder",
+                "This is a test email from Spring Boot"
+        );
+
+        return "Email sent successfully";
     }
 }

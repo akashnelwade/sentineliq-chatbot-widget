@@ -43,7 +43,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User updateUser(Long id, User user) {
-        return null;
+        User existingUser = userRepository.findById(id)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("User not found"));
+
+        existingUser.setName(user.getName());
+        existingUser.setEmail(user.getEmail());
+
+        return userRepository.save(existingUser);
     }
 
     @Override
@@ -54,6 +61,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<User> searchUsers(String q) {
-        return List.of();
+        return userRepository.findByNameContainingIgnoreCase(q);
     }
 }

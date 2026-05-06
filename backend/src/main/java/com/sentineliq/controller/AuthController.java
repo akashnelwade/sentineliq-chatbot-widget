@@ -1,5 +1,7 @@
 package com.sentineliq.controller;
 
+import com.sentineliq.entity.User;
+import org.springframework.web.bind.annotation.RequestBody;
 import com.sentineliq.security.CustomUserDetailsService;
 import com.sentineliq.security.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +21,8 @@ public class AuthController {
     private CustomUserDetailsService userDetailsService;
 
     @PostMapping("/register")
-    public String register() {
+    public String register(@RequestBody User user) {
+        user.setRole("USER");
         return "User registered";
     }
 
