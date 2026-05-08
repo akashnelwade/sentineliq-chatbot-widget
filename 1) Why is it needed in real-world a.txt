@@ -1,0 +1,49 @@
+ 1) Why is it needed in real-world applications?
+   Give a practical example (not book definition).
+
+“Polymorphism means the ability of a single object to take multiple forms. In Java, it is mainly achieved through method overloading (compile-time) and method overriding (runtime).
+
+The main purpose of polymorphism is to provide flexibility and dynamic behavior in applications. For example, in a payment system, we can have a common interface like Payment, and different implementations such as CreditCardPayment, UPIPayment, or NetBanking.
+
+At runtime, the system decides which payment method to execute based on the object, which makes the code more scalable and easier to extend without modifying existing code.”
+================================================================================================================================================
+2) What is the difference between method overloading and method overriding?
+
+“Method overloading and method overriding are both ways to achieve polymorphism in Java, but they differ in how and when they are resolved.
+
+Method overloading happens within the same class where methods have the same name but different parameters. It is resolved at compile time, so it is called compile-time polymorphism.
+
+Method overriding happens between parent and child classes where the child class provides a specific implementation of a method already defined in the parent class. It is resolved at runtime using dynamic method dispatch, so it is called runtime polymorphism.
+
+In short, overloading increases readability by using the same method name, while overriding enables dynamic behavior and extensibility in real-world applications.”
+=============================================================================================================================================
+3)What is the difference between HashMap and ConcurrentHashMap?
+
+HashMap and ConcurrentHashMap both store key-value pairs, but the main difference is thread safety.
+
+HashMap is not thread-safe, meaning it is not suitable for multi-threaded environments. If multiple threads modify it simultaneously, it can lead to data inconsistency.
+
+ConcurrentHashMap, on the other hand, is thread-safe and designed for concurrent access. It uses internal locking mechanisms like segment-level or bucket-level locking, allowing multiple threads to read and write safely without blocking the entire map.
+
+In real-world applications, we use HashMap in single-threaded scenarios for better performance, and ConcurrentHashMap in multi-threaded applications like web servers or APIs where multiple requests access shared data.
+================================================================================================================================================
+4)What happens internally when you put an element into a HashMap?
+“When we insert an element into a HashMap using put(key, value), Java first calculates the hash code of the key using hashCode().
+
+Then, this hash is converted into an index using a hashing function to determine the bucket where the entry should be stored.
+
+If the bucket is empty, the key-value pair is inserted directly. If there is already an element (collision), Java uses a linked list or tree structure (in Java 8+) to store multiple entries in the same bucket.
+
+If a key already exists, the value is updated instead of adding a new entry.
+
+During retrieval, HashMap again uses the hash and then equals() method to find the exact key, which is why average time complexity is O(1).”
+==============================================================================================================================================
+5)
+
+
+
+
+
+
+
+

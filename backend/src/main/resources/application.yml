@@ -2,37 +2,38 @@ server:
   port: 8080
 
 spring:
+
   datasource:
-    url: jdbc:h2:mem:testes
-    driver-class-name: org.h2.Driver
-    username: sa
-    password:
+    url: jdbc:mysql://mysql:3306/chatbotdb
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:
     hibernate:
       ddl-auto: update
+
     show-sql: true
 
-  h2:
-    console:
-      enabled: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
 
-
-
-    data:
-      redis:
-        host: localhost
-        port: 6379
+  data:
+    redis:
+      host: localhost
+      port: 6379
 
   cache:
     redis:
-      time-to-live: 6000000
+      time-to-live: 600000
 
   mail:
     host: ${MAIL_HOST}
     port: ${MAIL_PORT}
     username: ${MAIL_USERNAME}
     password: ${MAIL_PASSWORD}
+
     properties:
       mail:
         smtp:
@@ -41,5 +42,5 @@ spring:
             enable: true
 
 jwt:
-  secret: ${JWT_SECRET}
-  expiration: ${JWT_EXPIRATION}
+  secret: ${JWT_SECRET:testsecretkey}
+  expiration: ${JWT_EXPIRATION:3600000}
