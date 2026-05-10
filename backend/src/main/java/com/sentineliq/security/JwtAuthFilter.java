@@ -44,7 +44,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         // Step 1: Extract token
         if (header != null && header.startsWith("Bearer ")) {
             token = header.substring(7);
-            email = jwtUtil.extractEmail(token);
+            email = jwtUtil.extractUsername(token);
         }
 
         // Step 2: Validate and authenticate
@@ -52,7 +52,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
             UserDetails userDetails = userDetailsService.loadUserByUsername(email);
 
-            if (jwtUtil.validateToken(token, userDetails)) {
+            if (jwtUtil.validateToken(token, userDetails.getUsername())) {
 
                 UsernamePasswordAuthenticationToken auth =
                         new UsernamePasswordAuthenticationToken(

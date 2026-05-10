@@ -20,10 +20,12 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
     private EmailService emailService;
 
     // GET ALL (Pagination)
-    @PreAuthorize("hasRole('ADMIN')")
+    //@PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/all")
     public Page<User> getAllUsers(Pageable pageable) {
         return userService.getAllUsers(pageable);
@@ -31,14 +33,14 @@ public class UserController {
 
     // GET BY ID (404 handled in service)
     @GetMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
+    //@PreAuthorize("hasRole('ADMIN')")
     public User getUserById(@PathVariable Long id) {
         return userService.getUserById(id);
     }
 
     // CREATE
     @PostMapping("/create")
-    @PreAuthorize("hasRole('ADMIN')")
+   // @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<User> createUser(@Valid @RequestBody User user) {
         User savedUser = userService.createUser(user);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedUser);
@@ -58,7 +60,7 @@ public class UserController {
         return "User deleted successfully";
     }
 
-    @PreAuthorize("hasRole('USER')")
+    //@PreAuthorize("hasRole('USER')")
     @GetMapping("/profile")
     public String profile() {
         return "Welcome User";
